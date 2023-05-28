@@ -1,0 +1,28 @@
+.cat-info {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.cat-info img {
+  max-width: 500px;
+  min-height: 500px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cat-info .cat-data {
+  max-width: 500px;
+  padding: 20px;
+  background-color: var(--ss-bg-color);
+  border-radius: var(--ss-border-radius);
+  margin-left: 20px;
+  line-height: 1.5;
+  color: var(--ss-font-color);
+  box-shadow: 0 0 5px 0 rgba(63, 81, 181, 0.3);
+}
+
+.cat-info p {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
