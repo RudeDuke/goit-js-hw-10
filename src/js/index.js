@@ -3,24 +3,23 @@ import Notiflix from 'notiflix';
 import SlimSelect from 'slim-select';
 import 'slim-select/dist/slimselect.css';
 
-const slimSelect = new SlimSelect({
-  select: '.breed-select',
-  settings: {
-    placeholderText: 'Select Breed',
-  },
-});
-
 const breedSelect = document.querySelector('.breed-select');
 const loader = document.querySelector('.loader');
 const error = document.querySelector('.error');
 const catInfo = document.querySelector('.cat-info');
+let selectInstance;
 
 const loadBreedOptions = breeds => {
-  const options = breeds.map(breed => {
-    return { value: breed.id, text: breed.name };
-  });
+  const options = breeds.map(
+    ({ id, name }) => `<option value="${id}">${name}</option>`
+  );
+  breedSelect.innerHTML = options.join('');
 
-  slimSelect.setData(options);
+  // Initialize SlimSelect
+  selectInstance = new SlimSelect({
+    select: '.breed-select',
+    onChange: handleBreedSelection,
+  });
 };
 
 const showCatInfo = cat => {
@@ -56,8 +55,8 @@ const hideError = () => {
 };
 
 const handleBreedSelection = async () => {
-  const breedId = slimSelect.getSelected();
-  console.log(slimSelect.getSelected());
+  const breedId = breedSelect.value;
+
   showLoader();
   hideError();
 
@@ -84,6 +83,6 @@ const initializePage = async () => {
   }
 };
 
-breedSelect.addEventListener("change", handleBreedSelection)
+breedSelect.addEventListener('change', handleBreedSelection);
 
 initializePage();
