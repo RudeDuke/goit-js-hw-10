@@ -1,3 +1,12 @@
+.breed-select {
+  display: block;
+  margin: 0 auto;
+  max-width: 800px;
+  height: 30px;
+  font-size: large;
+  box-shadow: 0 0 10px #5897fb;
+}
+
 .cat-info {
   display: flex;
   justify-content: center;
@@ -14,11 +23,8 @@
 .cat-info .cat-data {
   max-width: 500px;
   padding: 20px;
-  background-color: var(--ss-bg-color);
-  border-radius: var(--ss-border-radius);
   margin-left: 20px;
   line-height: 1.5;
-  color: var(--ss-font-color);
   box-shadow: 0 0 5px 0 rgba(63, 81, 181, 0.3);
 }
 

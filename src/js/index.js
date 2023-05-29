@@ -7,18 +7,19 @@ const breedSelect = document.querySelector('.breed-select');
 const loader = document.querySelector('.loader');
 const error = document.querySelector('.error');
 const catInfo = document.querySelector('.cat-info');
-let selectInstance;
 
 const loadBreedOptions = breeds => {
   const options = breeds.map(
     ({ id, name }) => `<option value="${id}">${name}</option>`
   );
+
   breedSelect.innerHTML = options.join('');
 
-  // Initialize SlimSelect
-  selectInstance = new SlimSelect({
+  new SlimSelect({
     select: '.breed-select',
-    onChange: handleBreedSelection,
+    settings: {
+      placeholderText: 'Select Breed',
+    },
   });
 };
 
