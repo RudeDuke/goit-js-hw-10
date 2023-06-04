@@ -1,8 +1,7 @@
 .breed-select {
-  display: block;
+  display: none;
   margin: 0 auto;
   max-width: 800px;
-  height: 30px;
   font-size: large;
   box-shadow: 0 0 10px #5897fb;
 }

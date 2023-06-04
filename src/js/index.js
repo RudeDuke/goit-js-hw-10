@@ -1,28 +1,68 @@
+// ADDING NECESSARY LIBRARIES
 import { fetchBreeds, fetchCatByBreed } from './cat-api.js';
 import Notiflix from 'notiflix';
 import SlimSelect from 'slim-select';
 import 'slim-select/dist/slimselect.css';
 
-const breedSelect = document.querySelector('.breed-select');
+// ACCESSING DOM-ELEMENTS
+let slimSelector;
+const htmlSelector = document.querySelector('.breed-select');
 const loader = document.querySelector('.loader');
 const error = document.querySelector('.error');
 const catInfo = document.querySelector('.cat-info');
 
-const loadBreedOptions = breeds => {
+// -------------- AUXILIARY FUNCTIONS: ---------------------
+
+// Loader display
+const showLoader = () => {
+  loader.style.display = 'block';
+};
+
+const hideLoader = () => {
+  loader.style.display = 'none';
+};
+
+// Error display
+const showError = () => {
+ Notiflix.Report.failure(
+   'Oops!',
+   'Something went wrong! Please try to reload the page!',
+   'Reload',
+   () => {
+     location.reload();
+   }
+ );
+  clearMarkup();
+};
+
+const hideError = () => {
+  error.style.display = 'none';
+};
+
+// Mark-up cleaner
+const clearMarkup = () => {
+  catInfo.innerHTML = '';
+  slimSelector.setData([]);
+};
+
+// TO ADD CAT BREEDS TO THE SELECTOR
+const loadCatBreeds = breeds => {
   const options = breeds.map(
     ({ id, name }) => `<option value="${id}">${name}</option>`
   );
 
-  breedSelect.innerHTML = options.join('');
+  htmlSelector.insertAdjacentHTML('beforeend', options.join(''));
 
-  new SlimSelect({
+  // Slim Select initialization
+  slimSelector = new SlimSelect({
     select: '.breed-select',
     settings: {
-      placeholderText: 'Select Breed',
+      placeholderText: 'Select a cat breed',
     },
   });
 };
 
+// TO SHOW SELECTED CAT PROFILE
 const showCatInfo = cat => {
   const { imageUrl, breedName, description, temperament } = cat;
   const html = `
@@ -36,27 +76,25 @@ const showCatInfo = cat => {
   catInfo.innerHTML = html;
 };
 
-const showLoader = () => {
-  loader.style.display = 'block';
+// BACKEND QUERY №1. "PROVIDE CAT BREEDS"
+
+const initializePage = async () => {
+  try {
+    showLoader();
+    hideError();
+    const breeds = await fetchBreeds();
+    loadCatBreeds(breeds);
+  } catch {
+    showError();
+  } finally {
+    hideLoader();
+  }
 };
 
-const hideLoader = () => {
-  loader.style.display = 'none';
-};
-
-const showError = () => {
-  Notiflix.Report.failure(
-    'Oops!',
-    'Something went wrong! Try reloading the page!'
-  );
-};
-
-const hideError = () => {
-  error.style.display = 'none';
-};
+// BACKEND QUERY №2. "PROVIDE INFO ABOUT A CAT"
 
 const handleBreedSelection = async () => {
-  const breedId = breedSelect.value;
+  const breedId = htmlSelector.value;
 
   showLoader();
   hideError();
@@ -71,19 +109,6 @@ const handleBreedSelection = async () => {
   }
 };
 
-const initializePage = async () => {
-  try {
-    showLoader();
-    hideError();
-    const breeds = await fetchBreeds();
-    loadBreedOptions(breeds);
-  } catch {
-    showError();
-  } finally {
-    hideLoader();
-  }
-};
-
-breedSelect.addEventListener('change', handleBreedSelection);
+htmlSelector.addEventListener('change', handleBreedSelection);
 
 initializePage();
